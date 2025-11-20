@@ -1,0 +1,24 @@
+# Compiler files
+cache/
+coverage/
+generated/
+out/
+node_modules/
+.yarn/*
+!.yarn/releases
+
+# Coverage files
+lcov.info*
+coverage/
+
+# Dotenv file
+.env
+
+.DS_Store
+
+# Block numbers
+block-numbers.json
+
+# Local deployment logs
+broadcast/001_DeployXReserve.sol/31337/
+broadcast/**/dry-run/**

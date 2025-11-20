@@ -1,0 +1,27 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "compiler-version": ["error", "0.8.29"],
+    "func-visibility": [
+      "warn",
+      {
+        "ignoreConstructors": true
+      }
+    ],
+    "immutable-vars-naming": [
+      "warn",
+      {
+        "immutablesAsConstants": false
+      }
+    ],
+
+    "no-empty-blocks": "off",
+    "no-inline-assembly": "off",
+    "one-contract-per-file": "off",
+    "func-name-mixedcase": "off",
+    "duplicated-imports": "error",
+    "imports-order": "error",
+    "private-vars-leading-underscore": "error",
+    "import-path-check": "off"
+  }
+}

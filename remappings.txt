@@ -1,0 +1,6 @@
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
+@gateway/=lib/evm-gateway-contracts/
+@cctp/=lib/evm-cctp-contracts/src/
+@memview-sol/=lib/memview-sol/contracts/
+forge-std/=lib/forge-std/src/

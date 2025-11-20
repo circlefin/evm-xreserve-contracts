@@ -1,0 +1,20 @@
+name: AI PR
+on:
+  pull_request:
+    types:
+      - opened
+      - ready_for_review
+      - labeled
+jobs:
+  pr_review:
+    # Run when the PR is ready for review (i.e. not a draft) or explicitly labeled 'ai-pr-review'
+    if: ${{ !github.event.pull_request.draft || (github.event.label && github.event.label.name == 'ai-pr-review') }}
+    uses: circlefin/github-shared-pipelines/.github/workflows/ai-pr-review.yaml@v1
+  pr_code_gen_feedback:
+    # Run when the PR is ready for review
+    if: ${{ github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'ready_for_review') && !github.event.pull_request.draft }}
+    uses: circlefin/github-shared-pipelines/.github/workflows/ai-pr-code-gen-feedback.yaml@v1
+  pr_notes:
+    if: ${{ github.event.action == 'labeled' && github.event.label.name == 'ai-pr-notes' }}
+    uses: circlefin/github-shared-pipelines/.github/workflows/ai-pr-notes.yaml@v1
+  
