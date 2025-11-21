@@ -1,0 +1,60 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  ci:
+    name: CI
+    runs-on: small
+    steps:
+      - name: Run Circle actions runner setup
+        uses: circlefin/circle-runner-setup-action@v5
+        with:
+          repository: ${{ github.repository }}
+          branch: ${{ github.ref }}
+          node_enabled: true
+          node_version: "22.10.0"
+
+      - name: Setup environment
+        uses: ./.github/actions/setup
+
+      - name: Run formatter
+        run: yarn format
+
+      - name: Run linter
+        run: yarn lint
+
+      - name: Run tests
+        run: yarn test:all
+
+      - name: Check contract sizes
+        run: bash scripts/contract_sizes.sh
+
+      - name: Check test coverage
+        run: bash scripts/coverage.sh
+
+  rollup_results:
+    runs-on: small
+    name: Build Success Rollup
+    if: ${{ always() }}
+    needs:
+      - ci
+    steps:
+      - run: |
+          [ "${{ needs.ci.result }}" = "success" ] || [ "${{ needs.ci.result }}" = "skipped" ]
+
+  scan:
+    needs: ci
+    if: github.event_name == 'pull_request'
+    uses: circlefin/circle-public-github-workflows/.github/workflows/pr-scan.yaml@v1
+
+  release-sbom:
+    needs: ci
+    if: github.event_name == 'push'
+    uses: circlefin/circle-public-github-workflows/.github/workflows/attach-release-assets.yaml@v1

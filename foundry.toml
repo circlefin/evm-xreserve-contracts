@@ -1,0 +1,25 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.29"
+test = 'test'
+auto_detect_remappings = true
+auto_detect_solc = false
+ignored_warnings_from = ["lib"]
+optimizer = true
+optimizer_runs = 1500
+via_ir = true
+gas_reports = ["UpgradeablePlaceholder", "xReserve", "RemoteDomainDepositor"]
+fs_permissions = [
+    { access = "read-write", path = "./generated" },
+    { access = "read", path = "./deploy-contracts/compiled-contract-artifacts" }
+]
+
+[rpc_endpoints]
+ethereum = "https://ethereum-rpc.publicnode.com"
+ethereum_sepolia = "https://ethereum-sepolia-rpc.publicnode.com"
+arbitrum = "https://arb1.arbitrum.io/rpc"
+arbitrum_sepolia = "https://sepolia-rollup.arbitrum.io/rpc"
+optimism = "https://optimism-rpc.publicnode.com"
+optimism_sepolia = "https://optimism-sepolia-rpc.publicnode.com"

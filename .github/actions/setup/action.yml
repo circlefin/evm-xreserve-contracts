@@ -1,0 +1,31 @@
+name: Setup xReserve Environment
+description: Shared setup for Node, Yarn, Foundry, and required tools
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.10.0'
+
+    - name: Install Foundry
+      uses: foundry-rs/foundry-toolchain@v1
+      with:
+        version: 'v1.0.0'
+
+    - name: Install yarn
+      run: |
+        npm install -g yarn
+        yarn --version
+      shell: bash
+
+    - name: Install dependencies
+      run: yarn install
+      shell: bash
+
+    - name: Install system dependencies (jq, lcov)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq lcov
+      shell: bash

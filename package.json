@@ -1,0 +1,32 @@
+{
+  "name": "evm-xreserve-contracts",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "forge build",
+    "coverage": "./scripts/coverage.sh && open coverage/index.html",
+    "test": "forge test",
+    "test:all": "bash ./scripts/update_block_numbers.sh && bash ./scripts/test_all_forks.sh && bash ./scripts/integration_verify_xreserve_events.sh",
+    "test:gas": "FORGE_GAS_REPORT=true forge test",
+    "lint": "yarn lint:src && yarn lint:test",
+    "lint:src": "solhint -c .solhint-src.json 'src/**/*.sol'",
+    "lint:test": "solhint -c .solhint-test.json 'test/**/*.sol'",
+    "lint:fix": "yarn lint:src --fix && yarn lint:test --fix",
+    "format": "forge fmt --check",
+    "format:fix": "forge fmt",
+    "verify:xreserve:events": "tsx ./deploy-contracts/004_VerifyXReserveDeploymentEvents.ts",
+    "postinstall": "./scripts/update_submodules.sh",
+    "sizes": "forge build --sizes; ./scripts/contract_sizes.sh",
+    "mine-salts": "./scripts/mine_deployment_salts.sh"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "solhint": "5.2.0",
+    "tsx": "4.19.2",
+    "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "16.4.5",
+    "ethers": "6.13.4"
+  },
+  "packageManager": "yarn@4.7.0"
+}
