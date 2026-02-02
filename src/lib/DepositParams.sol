@@ -26,19 +26,3 @@ struct DepositParams {
     uint256 maxFee;
     bytes hookData;
 }
-
-/// @notice Parameters for EIP-2612/EIP-7597 permit operations
-struct PermitParams {
-    address owner;
-    uint256 deadline;
-    bytes signature;
-}
-
-/// @notice Parameters for ERC-3009/ERC-7598 authorization operations
-struct AuthorizationParams {
-    address from;
-    uint256 validAfter;
-    uint256 validBefore;
-    bytes32 nonce;
-    bytes signature;
-}
