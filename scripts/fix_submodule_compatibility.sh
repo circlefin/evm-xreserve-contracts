@@ -151,8 +151,6 @@ fix_gateway_compatibility() {
     fix_pattern "lib/evm-gateway-contracts" "src/lib/Attestations\.sol" "@gateway/src/lib/Attestations.sol" "Fixing Attestations import path"
     fix_pattern "lib/evm-gateway-contracts" "src/lib/AttestationLib\.sol" "@gateway/src/lib/AttestationLib.sol" "Fixing AttestationLib import path"
     fix_pattern "lib/evm-gateway-contracts" "src/lib/AddressLib\.sol" "@gateway/src/lib/AddressLib.sol" "Fixing AddressLib import path"
-    fix_pattern "lib/evm-gateway-contracts" "src/interfaces/IERC7597\.sol" "@gateway/src/interfaces/IERC7597.sol" "Fixing IERC7597 import path"
-    fix_pattern "lib/evm-gateway-contracts" "src/interfaces/IERC7598\.sol" "@gateway/src/interfaces/IERC7598.sol" "Fixing IERC7598 import path"
 }
 
 # =============================================================================
