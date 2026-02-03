@@ -21,11 +21,9 @@ import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/ut
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {AddressLib} from "src/lib/AddressLib.sol";
-import {IERC7597} from "../../interfaces/IERC7597.sol";
-import {IERC7598} from "../../interfaces/IERC7598.sol";
 import {IGatewayWallet} from "../../interfaces/IGatewayWallet.sol";
 import {IRemoteDomainHookExecutor} from "../../interfaces/IRemoteDomainHookExecutor.sol";
-import {DepositParams, PermitParams, AuthorizationParams} from "../../lib/DepositParams.sol";
+import {DepositParams} from "../../lib/DepositParams.sol";
 import {Blocklistable} from "./Blocklistable.sol";
 import {RemoteDomainRegistration} from "./RemoteDomainRegistration.sol";
 
@@ -81,59 +79,6 @@ abstract contract DepositToRemote is Blocklistable, RemoteDomainRegistration, Re
         bytes calldata hookData
     ) external nonReentrant {
         _depositToRemote(value, remoteDomain, remoteRecipient, localToken, msg.sender, maxFee, hookData);
-    }
-
-    /// @notice Deposits tokens and transfers them to a remote domain using an EIP-2612/EIP-7597 permit
-    /// @dev This function handles the deposit and transfer of tokens using a permit signature.
-    ///      The permit allows for gasless token approvals and supports smart contract wallets.
-    /// @param depositParams The deposit parameters (value, remoteDomain, remoteRecipient, localToken, maxFee, hookData)
-    /// @param permitParams The permit parameters (owner, deadline, signature)
-    function depositToRemoteWithPermit(DepositParams calldata depositParams, PermitParams calldata permitParams)
-        external
-        nonReentrant
-    {
-        // Validate deposit requirements and constraints
-        _validateDepositInputs(
-            depositParams.value, depositParams.remoteDomain, depositParams.remoteRecipient, depositParams.localToken
-        );
-
-        // Execute the permit and transfer the tokens from the owner to this contract
-        IERC7597(depositParams.localToken).permit(
-            permitParams.owner, address(this), depositParams.value, permitParams.deadline, permitParams.signature
-        );
-        IERC20(depositParams.localToken).safeTransferFrom(permitParams.owner, address(this), depositParams.value);
-
-        // Execute the deposit
-        _executeDepositToRemote(depositParams, permitParams.owner);
-    }
-
-    /// @notice Deposits tokens and transfers them to a remote domain using an ERC-3009/ERC-7598 authorization
-    /// @dev This function handles the deposit and transfer of tokens using an authorization signature.
-    ///      The authorization allows for gasless token transfers and supports smart contract wallets.
-    /// @param depositParams The deposit parameters (value, remoteDomain, remoteRecipient, localToken, maxFee, hookData)
-    /// @param authParams The authorization parameters (from, validAfter, validBefore, nonce, signature)
-    function depositToRemoteWithAuthorization(
-        DepositParams calldata depositParams,
-        AuthorizationParams calldata authParams
-    ) external nonReentrant {
-        // Validate deposit requirements and constraints
-        _validateDepositInputs(
-            depositParams.value, depositParams.remoteDomain, depositParams.remoteRecipient, depositParams.localToken
-        );
-
-        // Execute the authorization to transfer the tokens from the depositor to this contract
-        IERC7598(depositParams.localToken).receiveWithAuthorization(
-            authParams.from,
-            address(this),
-            depositParams.value,
-            authParams.validAfter,
-            authParams.validBefore,
-            authParams.nonce,
-            authParams.signature
-        );
-
-        // Execute the deposit
-        _executeDepositToRemote(depositParams, authParams.from);
     }
 
     // ============ Internal Functions ============
