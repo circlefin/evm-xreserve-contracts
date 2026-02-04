@@ -207,7 +207,7 @@ contract DeployXReserveTest is Test {
         );
         assertEq(
             implAddress,
-            0x640c78cE3E4cA038712d5d8b045ef28E0226e1D9,
+            0x7212D3C3F5824aF25F12fd8b3941ED3Db66D280E,
             "Implementation should deploy to deterministic address"
         );
         assertEq(
