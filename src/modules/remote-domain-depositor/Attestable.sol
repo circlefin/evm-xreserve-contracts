@@ -292,7 +292,7 @@ contract Attestable is DomainManageable, IERC1271 {
     /// The signature parameter should contain concatenated 65-byte ECDSA signatures from persistently enabled attesters in ascending order of their addresses.
     /// @param hash The hash of the data that was signed
     /// @param signature Concatenated signatures from persistently enabled attesters (65 bytes each, count must equal target threshold)
-    /// @return magicValue Returns 0x8d3df49d if the signature is valid, 0xffffffff otherwise
+    /// @return magicValue Returns 0x8bd40d30 (the function selector of isValidPersistentSignature, i.e. VALID_PERSISTENT_SIGNATURE_MAGIC) if the signature is valid, 0xffffffff otherwise
     /// @custom:security Signatures must have EXACTLY the target threshold number of persistently enabled attesters
     function isValidPersistentSignature(bytes32 hash, bytes calldata signature)
         external
